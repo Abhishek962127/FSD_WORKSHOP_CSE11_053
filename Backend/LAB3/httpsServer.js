@@ -1,89 +1,67 @@
-import http, { request } from "http";
-import fs from "node:fs/promises";
-import { json } from "node:stream/consumers";
+import http from "http";
+import os from "os";
+
 const arr = [
     {
+        id: 111,
         name: "ABhi",
         dept: "Cse",
         classs: "Cse11",
     },
     {
+        id: 102,
         name: "Abhitansu",
         dept: "Cse",
         classs: "Cse11",
     },
     {
+        id: 101,
         name: "sonkar",
         dept: "Cse",
         classs: "Cse13",
     },
 ];
 
-// const filePath = "./userData.txt";
-// async function createFile(content) {
-//     try {
-//         await fs.writeFile(filePath, content, "UTF-8");
-//         console.log(`File create sucessfully:- ${content}`)
-//     }
-//     catch (error) {
-//         console.log(`Error in file ${error}`);
-//     }
-// }
-// async function appenFile() {
-//     try {
-//         await fs.appendFile(filePath, content, "UTF-8");
-//         console.log(`File create sucessfully:- ${content}`)
-//     }
-//     catch (error) {
-//         console.log(`Error in file ${error}`);
-//     }
-// }
-// createFile("Hello world");
-
 const server = http.createServer((req, res) => {
+
     const reqUrl = req.url;
     const method = req.method;
 
+    
     if (reqUrl === "/msg" && method === "GET") {
-        res.status = 200;
-        res.setHeader = ("Content-Type", "text/plain");
-        res.end("Welcome to backend");
-    } else if (reqUrl === "/user") {
-        res.end(JSON.stringify(arr));
-    } else if (reqUrl === "/create" && method === "POST") {
-        // let body = "";
-        // res.on("data", (content) => {
-        //     body = body + content;
-        // });
-        // const data = JSON.parse(body);
-        // const newUser = {
-        //     name: data.name,
-        //     dept: data.dept,
-        //     classs: data.classs,
-        // };
-        // res.statusCode = 201;
-        // res.setHeader("Content-Type", "application/json");
-        // arr.push(newUser);
-        // req.end(arr);
-        // res.end(
-        //     JSON.stringify({
-        //         message: "User created successfully",
-        //         user: newUser,
-        //     }),
-        // );
-         let body = "";
 
-        // Receive request body
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/plain");
+
+        res.end("Welcome to backend");
+
+    }
+
+
+    else if (reqUrl =="/user" && method =="GET") {
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+
+        res.end(JSON.stringify(arr));
+
+    }
+
+   
+    else if (reqUrl == "/create" && method == "POST") {
+
+        let body = "";
+
         req.on("data", (content) => {
             body += content;
         });
 
-        // Body completely received
         req.on("end", () => {
 
             const data = JSON.parse(body);
 
             const newUser = {
+                id: data.id,
                 name: data.name,
                 dept: data.dept,
                 classs: data.classs
@@ -94,15 +72,66 @@ const server = http.createServer((req, res) => {
             res.statusCode = 201;
             res.setHeader("Content-Type", "application/json");
 
-            res.end(JSON.stringify("User created successfully"));
+            res.end(JSON.stringify({
+                message: "User created successfully",
+                user: newUser
+            }));
         });
     }
-});
-server.listen(4000, () => {
-    console.log(`Server is running on port number `);
+
+   
+    else if (reqUrl === "/sys" && method === "GET") {
+
+        const data = {
+            platform: os.platform(),
+            IP: os.networkInterfaces()
+        };
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+
+        res.end(JSON.stringify(data));
+
+    }
+
+
+    else if (reqUrl.startsWith("/users/") && method === "GET") {
+
+        const id = reqUrl.split("/")[2];
+
+        console.log("Requested ID:", id);
+
+        const match = arr.find((u) => {
+            return u.id === Number(id);
+        });
+
+        if (!match) {
+            res.statusCode = 404;
+            return res.end("User not found");
+        }
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+
+        res.end(JSON.stringify(match));
+    }
+    else if(reqUrl.startsWith("/users/") && method=="DELETE"){
+        const id=reqUrl.split("/")[2];
+        const index=arr.findIndex((u)=>u.id==id);
+        if(index==-1){
+            return res.end("elemet not present");
+        }
+        arr.splice(index,1);
+        res.end("Deleted sucessfully");
+    }
+
+    
+    else {
+        res.statusCode = 404;
+        res.end("Route not found");
+    }
 });
 
-// http.createServer.listen(3000,()=>{
-//    console.log("Server is running on port number 3000")
-// })
-// server.listen(3000)
+server.listen(4000, () => {
+    console.log("Server is running on port 4000");
+});
