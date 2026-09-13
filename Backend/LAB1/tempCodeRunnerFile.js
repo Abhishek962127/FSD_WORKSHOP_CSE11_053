@@ -1,0 +1,1 @@
+myEmitter.emit("greet", "Mr. Smith");

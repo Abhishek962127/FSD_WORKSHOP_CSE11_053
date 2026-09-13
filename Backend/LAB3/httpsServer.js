@@ -1,6 +1,5 @@
 import http from "http";
 import os from "os";
-
 const arr = [
     {
         id: 111,
@@ -21,13 +20,9 @@ const arr = [
         classs: "Cse13",
     },
 ];
-
 const server = http.createServer((req, res) => {
-
     const reqUrl = req.url;
-    const method = req.method;
-
-    
+    const method = req.method;    
     if (reqUrl === "/msg" && method === "GET") {
 
         res.statusCode = 200;
@@ -36,8 +31,6 @@ const server = http.createServer((req, res) => {
         res.end("Welcome to backend");
 
     }
-
-
     else if (reqUrl =="/user" && method =="GET") {
 
         res.statusCode = 200;
@@ -46,8 +39,6 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify(arr));
 
     }
-
-   
     else if (reqUrl == "/create" && method == "POST") {
 
         let body = "";
@@ -78,8 +69,6 @@ const server = http.createServer((req, res) => {
             }));
         });
     }
-
-   
     else if (reqUrl === "/sys" && method === "GET") {
 
         const data = {
@@ -93,8 +82,6 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify(data));
 
     }
-
-
     else if (reqUrl.startsWith("/users/") && method === "GET") {
 
         const id = reqUrl.split("/")[2];
@@ -123,15 +110,12 @@ const server = http.createServer((req, res) => {
         }
         arr.splice(index,1);
         res.end("Deleted sucessfully");
-    }
-
-    
+    } 
     else {
         res.statusCode = 404;
         res.end("Route not found");
     }
 });
-
 server.listen(4000, () => {
     console.log("Server is running on port 4000");
 });

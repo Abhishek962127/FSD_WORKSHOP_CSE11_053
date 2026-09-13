@@ -7,4 +7,4 @@ myEmitter.off("goodbye", (teacher) => {
     console.log(`Class finished by ${teacher}`);
 });
 myEmitter.emit("greet", "Mr. Smith");
-myEmitter.emit("goodbye", "Mr. Smith");
+// myEmitter.emit("goodbye", "Mr. Smith");

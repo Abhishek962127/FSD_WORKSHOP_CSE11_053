@@ -24,3 +24,5 @@ This repository contains my Full Stack Development workshop assignments and prac
 
 Frontend workshop files will be added here.
 npm init -y
+
+# GET Request 
