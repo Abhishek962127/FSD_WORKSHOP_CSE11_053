@@ -2,224 +2,335 @@ import express from "express";
 import cors from "cors";
 
 const app = express();
+
 const port = 7000;
 
+// Middleware
 app.use(express.json());
 app.use(cors());
+
+
+// -------------------- DATA --------------------
 
 const arr = [
     {
         id: 111,
         name: "ABhi",
         dept: "Cse",
-        classs: "Cse11",
+        classs: "Cse11"
     },
     {
         id: 102,
         name: "Abhitansu",
         dept: "Cse",
-        classs: "Cse11",
+        classs: "Cse11"
     },
     {
         id: 101,
         name: "sonkar",
         dept: "Cse",
-        classs: "Cse13",
-    },
+        classs: "Cse13"
+    }
 ];
 
 const registeredData = [];
 
-// GET /
+
+// -------------------- HOME --------------------
+
 app.get("/", (req, res) => {
+
     res.status(200).json({
         message: "Welcome to Server",
-        arr,
+        arr
     });
+
 });
 
-// GET /user
+
+// -------------------- GET ALL USERS --------------------
+
 app.get("/user", (req, res) => {
+
     res.status(200).json({
-        message: "Welcome to Server",
-        arr,
+        message: "All users",
+        users: arr
     });
+
 });
 
-// POST /create
+
+// -------------------- CREATE USER --------------------
+
 app.post("/create", (req, res) => {
+
     try {
+
         const { id, name, dept, classs } = req.body;
+
+        if (!id || !name || !dept || !classs) {
+
+            return res.status(400).json({
+                message: "All fields are required"
+            });
+
+        }
 
         const newUser = {
             id,
             name,
             dept,
-            classs,
+            classs
         };
 
         arr.push(newUser);
 
-        res.status(200).json({
-            message: "user created successfully",
-            newUser,
-        });
-
-    } catch (error) {
-        console.log(`Error message ${error}`);
-    }
-});
-
-
-// =============================
-// SIGNUP
-// =============================
-
-app.post("/signup", (req, res) => {
-    try {
-
-        const { name, email, password } = req.body;
-
-        // Check all fields
-        if (!name || !email || !password) {
-            return res.status(400).json({
-                message: "All fields are required"
-            });
-        }
-
-        // Check if email already exists
-        const existingUser = registeredData.find(
-            (user) => user.email === email
-        );
-
-        if (existingUser) {
-            return res.status(400).json({
-                message: "Email already registered"
-            });
-        }
-
-        // Create new user
-        const newUser = {
-            id: registeredData.length + 1,
-            name,
-            email,
-            password
-        };
-
-        // Store user
-        registeredData.push(newUser);
-
         res.status(201).json({
-            message: "Signup successful",
+            message: "User created successfully",
             user: newUser
         });
 
     } catch (error) {
 
-        console.log(`Signup error: ${error}`);
-
         res.status(500).json({
-            message: "Internal server error"
+            message: "Server error"
         });
+
     }
+
 });
 
 
-// GET /registered
+// -------------------- GET REGISTERED USERS --------------------
+
 app.get("/registered", (req, res) => {
+
     res.status(200).json({
-        users: registeredData,
+        message: "Registered users",
+        users: registeredData
     });
+
 });
 
 
-// GET /user/:id
+// -------------------- GET USER BY ID --------------------
+
 app.get("/user/:id", (req, res) => {
+
     try {
 
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
 
-        const search = arr.find((u) => u.id == id);
+        const search = arr.find((u) => u.id === id);
 
         if (!search) {
+
             return res.status(404).json({
-                message: "Not found in array",
+                message: "User not found"
             });
+
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             message: "User found",
-            user: search,
+            user: search
         });
 
     } catch (error) {
 
-        console.log(`Message : ${error}`);
+        res.status(500).json({
+            message: "Server error"
+        });
+
     }
+
 });
 
 
-// PUT /edit/:id
+// -------------------- UPDATE USER --------------------
+
 app.put("/edit/:id", (req, res) => {
+
     try {
 
         const id = parseInt(req.params.id);
 
         const { name, dept, classs } = req.body;
 
-        const search = arr.findIndex((u) => u.id == id);
+        const index = arr.findIndex((u) => u.id === id);
 
-        if (search == -1) {
+        if (index === -1) {
+
             return res.status(404).json({
-                message: "Not found in array",
+                message: "User not found"
             });
+
         }
 
-        arr[search] = {
-            id: id,
+        arr[index] = {
+            id,
             name,
             dept,
-            classs,
+            classs
         };
 
-        return res.status(200).json({
+        res.status(200).json({
             message: "User updated successfully",
-            user: arr[search],
+            user: arr[index]
         });
 
     } catch (error) {
 
-        console.log(`Message : ${error}`);
+        res.status(500).json({
+            message: "Server error"
+        });
+
     }
+
 });
 
 
-// GET /userByid/:id
+// -------------------- GET USER BY ID --------------------
+
 app.get("/userByid/:id", (req, res) => {
+
     try {
 
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
 
-        const use = arr.find((u) => u.id == id);
+        const user = arr.find((u) => u.id === id);
 
-        if (!use) {
+        if (!user) {
+
             return res.status(404).json({
-                message: "user not found",
+                message: "User not found"
             });
+
         }
 
-        return res.status(200).json({
-            message: "user found",
-            use,
+        res.status(200).json({
+            message: "User found",
+            user
         });
 
     } catch (error) {
 
-        console.log(`message : ${error}`);
+        res.status(500).json({
+            message: "Server error"
+        });
+
     }
+
 });
 
 
+// -------------------- DELETE USER --------------------
+
+app.delete("/user/:id", (req, res) => {
+
+    try {
+
+        const id = parseInt(req.params.id);
+
+        const index = arr.findIndex((u) => u.id === id);
+
+        if (index === -1) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        const deletedUser = arr.splice(index, 1);
+
+        res.status(200).json({
+            message: "User deleted successfully",
+            user: deletedUser[0]
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+});
+
+
+// -------------------- SIGNUP --------------------
+
+app.post("/signup", (req, res) => {
+
+    try {
+
+        const { name, email, password } = req.body;
+
+        if (!name || !email || !password) {
+
+            return res.status(400).json({
+                message: "All fields are required"
+            });
+
+        }
+
+        const existingUser = registeredData.find(
+            (user) => user.email === email
+        );
+
+        if (existingUser) {
+
+            return res.status(400).json({
+                message: "Email already registered"
+            });
+
+        }
+
+        const newUser = {
+
+            id: registeredData.length + 1,
+
+            name,
+
+            email,
+
+            password
+
+        };
+
+        registeredData.push(newUser);
+
+        res.status(201).json({
+
+            message: "Signup successful",
+
+            user: {
+                id: newUser.id,
+                name: newUser.name,
+                email: newUser.email
+            }
+
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            message: "Internal server error"
+        });
+
+    }
+
+});
+
+
+// -------------------- SERVER --------------------
+
 app.listen(port, () => {
-    console.log(`running on server ${port}`);
+
+    console.log(`Server running on http://localhost:${port}`);
+
 });

@@ -1,139 +1,195 @@
 import { useState } from "react";
+import axios from "axios";
 
 function Signup() {
 
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-    });
+    const [name, setName] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+    const [email, setEmail] = useState("");
 
-    const handleSubmit = async (e) => {
+    const [password, setPassword] = useState("");
+
+    const [confirmPassword, setConfirmPassword] =
+        useState("");
+
+    const [message, setMessage] = useState("");
+
+
+    const handleSignup = async (e) => {
+
         e.preventDefault();
 
-        if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match");
+
+        // Check password
+        if (password !== confirmPassword) {
+
+            setMessage(
+                "Passwords do not match"
+            );
+
             return;
+
         }
+
 
         try {
 
-            const response = await fetch(
+            const result = await axios.post(
+
                 "http://localhost:7000/signup",
+
                 {
-                    method: "POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    name: name,
 
-                    body: JSON.stringify({
-                        name: formData.name,
-                        email: formData.email,
-                        password: formData.password
-                    })
+                    email: email,
+
+                    password: password
+
                 }
+
             );
 
-            const data = await response.json();
 
-            console.log(data);
+            setMessage(
+                result.data.message
+            );
 
-            if (response.ok) {
-                alert("Signup successful!");
 
-                setFormData({
-                    name: "",
-                    email: "",
-                    password: "",
-                    confirmPassword: ""
-                });
+            // Clear form
 
-            } else {
-                alert(data.message);
-            }
+            setName("");
+
+            setEmail("");
+
+            setPassword("");
+
+            setConfirmPassword("");
+
 
         } catch (error) {
 
-            console.log(error);
-            alert("Unable to connect to server");
+
+            if (error.response) {
+
+                setMessage(
+                    error.response.data.message
+                );
+
+            } else {
+
+                setMessage(
+                    "Server error"
+                );
+
+            }
 
         }
+
     };
 
+
     return (
-        <div className="signup-page">
 
-            <div className="signup-box">
+        <div className="signup">
 
-                <h1>Create Account</h1>
+            <h1>
+                Sign Up
+            </h1>
 
-                <p>Sign up to get started</p>
 
-                <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSignup}>
 
-                    <label>Name</label>
 
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Enter your name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
+                <input
 
-                    <label>Email</label>
+                    type="text"
 
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
+                    placeholder="Enter name"
 
-                    <label>Password</label>
+                    value={name}
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Enter password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
+                    onChange={(e) =>
+                        setName(e.target.value)
+                    }
 
-                    <label>Confirm Password</label>
+                    required
 
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm password"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
+                />
 
-                    <button type="submit">
-                        Sign Up
-                    </button>
 
-                </form>
+                <input
 
-            </div>
+                    type="email"
+
+                    placeholder="Enter email"
+
+                    value={email}
+
+                    onChange={(e) =>
+                        setEmail(e.target.value)
+                    }
+
+                    required
+
+                />
+
+
+                <input
+
+                    type="password"
+
+                    placeholder="Enter password"
+
+                    value={password}
+
+                    onChange={(e) =>
+                        setPassword(e.target.value)
+                    }
+
+                    required
+
+                />
+
+
+                <input
+
+                    type="password"
+
+                    placeholder="Confirm password"
+
+                    value={confirmPassword}
+
+                    onChange={(e) =>
+                        setConfirmPassword(e.target.value)
+                    }
+
+                    required
+
+                />
+
+
+                <button type="submit">
+
+                    Sign Up
+
+                </button>
+
+
+            </form>
+
+
+            <p className="signup-message">
+
+                {message}
+
+            </p>
+
 
         </div>
+
     );
+
 }
 
 export default Signup;
