@@ -1,34 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
+function Login() {
 
     const navigate = useNavigate();
 
-    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
 
 
-    const handleSignup = async (e) => {
+    const handleLogin = async (e) => {
 
         e.preventDefault();
-
-
-        if (password !== confirmPassword) {
-
-            alert("Passwords do not match");
-
-            return;
-
-        }
 
 
         try {
 
             const response = await fetch(
-                "http://localhost:7000/signup",
+                "http://localhost:7000/login",
                 {
                     method: "POST",
 
@@ -37,7 +26,6 @@ function Signup() {
                     },
 
                     body: JSON.stringify({
-                        name,
                         email,
                         password
                     })
@@ -57,18 +45,24 @@ function Signup() {
             }
 
 
-            alert("Signup successful");
+            // Save logged-in user
+            localStorage.setItem(
+                "user",
+                JSON.stringify(data.user)
+            );
+
+
+            alert("Login successful");
 
 
             // Clear form
-            setName("");
             setEmail("");
             setPassword("");
-            setConfirmPassword("");
 
 
-            // Go to Login
-            navigate("/login");
+            // Go to Dashboard
+            navigate("/dashboard");
+
 
         } catch (error) {
 
@@ -85,27 +79,10 @@ function Signup() {
 
         <div className="page-container">
 
-            <h1>Signup</h1>
+            <h1>Login</h1>
 
 
-            <form onSubmit={handleSignup}>
-
-                <div>
-
-                    <label>Name</label>
-
-                    <input
-                        type="text"
-                        placeholder="Enter name"
-                        value={name}
-                        onChange={(e) =>
-                            setName(e.target.value)
-                        }
-                        required
-                    />
-
-                </div>
-
+            <form onSubmit={handleLogin}>
 
                 <div>
 
@@ -141,25 +118,8 @@ function Signup() {
                 </div>
 
 
-                <div>
-
-                    <label>Confirm Password</label>
-
-                    <input
-                        type="password"
-                        placeholder="Confirm password"
-                        value={confirmPassword}
-                        onChange={(e) =>
-                            setConfirmPassword(e.target.value)
-                        }
-                        required
-                    />
-
-                </div>
-
-
                 <button type="submit">
-                    Signup
+                    Login
                 </button>
 
             </form>
@@ -168,8 +128,8 @@ function Signup() {
             <br />
 
 
-            <button onClick={() => navigate("/login")}>
-                Already have an account? Login
+            <button onClick={() => navigate("/signup")}>
+                Don't have an account? Signup
             </button>
 
         </div>
@@ -178,4 +138,4 @@ function Signup() {
 
 }
 
-export default Signup;
+export default Login;

@@ -1,14 +1,23 @@
-import { useState } from "react";
-import Signup from "./component/signUp";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Link,
+    Navigate
+} from "react-router-dom";
+
 import ApiTester from "./component/ApiTester";
+import SignUp from "./component/signUp";
+import Login from "./component/Login";
+import Dashboard from "./component/Dashboard";
+
 import "./App.css";
 
 function App() {
 
-    const [page, setPage] = useState("signup");
-
     return (
-        <div>
+
+        <BrowserRouter>
 
             <nav className="navbar">
 
@@ -16,24 +25,61 @@ function App() {
 
                 <div>
 
-                    <button onClick={() => setPage("signup")}>
-                        Signup
-                    </button>
+                    <Link to="/signup">
+                        <button>Signup</button>
+                    </Link>
 
-                    <button onClick={() => setPage("api")}>
-                        API Tester
-                    </button>
+                    <Link to="/login">
+                        <button>Login</button>
+                    </Link>
+
+                    <Link to="/dashboard">
+                        <button>Dashboard</button>
+                    </Link>
+
+                    <Link to="/api">
+                        <button>API Tester</button>
+                    </Link>
 
                 </div>
 
             </nav>
 
-            {page === "signup" && <Signup />}
 
-            {page === "api" && <ApiTester />}
+            <Routes>
 
-        </div>
+                
+                <Route
+                    path="/"
+                    element={<Navigate to="/login" />}
+                />
+
+                <Route
+                    path="/signup"
+                    element={<SignUp />}
+                />
+
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+                <Route
+                    path="/dashboard"
+                    element={<Dashboard />}
+                />
+
+                <Route
+                    path="/api"
+                    element={<ApiTester />}
+                />
+
+            </Routes>
+
+        </BrowserRouter>
+
     );
+
 }
 
 export default App;

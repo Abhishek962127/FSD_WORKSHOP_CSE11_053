@@ -1,16 +1,228 @@
-/* =========================
-   NAVBAR
-========================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-.navbar {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fb;
+    color: #222;
+}
+
+/* Common Page */
+
+.page-container {
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.page-container h1 {
+    margin-bottom: 25px;
+}
+
+.page-container p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+
+/* Form */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+}
+
+form input:focus {
+    border-color: #222;
+}
+
+
+/* Buttons */
+
+button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #222;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+
+/* Dashboard */
+
+.dashboard {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard h1 {
+    margin-bottom: 10px;
+}
+
+.dashboard h2 {
+    margin-bottom: 25px;
+}
+
+.dashboard p {
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+
+/* API Tester */
+
+.api-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.api-container h1 {
+    margin-bottom: 25px;
+}
+
+.request-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.request-bar select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.request-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.request-body {
+    margin-bottom: 25px;
+}
+
+.request-body h3 {
+    margin-bottom: 10px;
+}
+
+.request-body textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.response {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.response-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 15px;
+    background-color: #f1f1f1;
+}
 
-    padding: 15px 40px;
+.response-header h3 {
+    margin: 0;
+}
 
-    background: #222;
+.response-header span {
+    font-weight: bold;
+}
 
+.response pre {
+    padding: 20px;
+    min-height: 200px;
+    overflow-x: auto;
+    background-color: #111;
+    color: #fff;
+    font-family: monospace;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .page-container,
+    .dashboard,
+    .api-container {
+        width: 95%;
+        margin-top: 30px;
+        padding: 20px;
+    }
+
+    .request-bar {
+        flex-direction: column;
+    }
+
+    .request-bar input {
+        width: 100%;
+    }
+
+}
+.navbar {
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #222;
     color: white;
 }
 
@@ -18,267 +230,16 @@
     margin: 0;
 }
 
+.navbar div {
+    display: flex;
+    gap: 10px;
+}
+
 .navbar button {
-    margin-left: 10px;
-
-    padding: 10px 20px;
-
-    border: none;
-
-    background: white;
-
-    color: black;
-
-    cursor: pointer;
-
-    font-size: 15px;
+    background-color: white;
+    color: #222;
 }
 
 .navbar button:hover {
-    background: #ddd;
-}
-
-
-/* =========================
-   SIGNUP
-========================= */
-
-.signup {
-
-    width: 400px;
-
-    margin: 60px auto;
-
-    padding: 30px;
-
-    border: 1px solid #ddd;
-
-    border-radius: 10px;
-
-    box-shadow: 0 0 10px #ddd;
-
-    text-align: center;
-
-}
-
-.signup h1 {
-
-    margin-bottom: 25px;
-
-}
-
-
-.signup form {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 15px;
-
-}
-
-
-.signup input {
-
-    padding: 12px;
-
-    font-size: 16px;
-
-    border: 1px solid #aaa;
-
-    border-radius: 5px;
-
-    outline: none;
-
-}
-
-
-.signup input:focus {
-
-    border-color: black;
-
-}
-
-
-.signup button {
-
-    padding: 12px;
-
-    background: black;
-
-    color: white;
-
-    border: none;
-
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    font-size: 16px;
-
-}
-
-
-.signup button:hover {
-
-    background: #333;
-
-}
-
-
-.signup-message {
-
-    margin-top: 20px;
-
-    font-weight: bold;
-
-}
-
-
-/* =========================
-   API TESTER
-========================= */
-
-.api-tester {
-
-    width: 90%;
-
-    max-width: 1100px;
-
-    margin: 40px auto;
-
-}
-
-
-.api-tester h1 {
-
-    text-align: center;
-
-    margin-bottom: 30px;
-
-}
-
-
-/* Request bar */
-
-.request-bar {
-
-    display: flex;
-
-    gap: 10px;
-
-}
-
-
-.request-bar select {
-
-    width: 100px;
-
-    padding: 12px;
-
-    font-size: 16px;
-
-}
-
-
-.request-bar input {
-
-    flex: 1;
-
-    padding: 12px;
-
-    font-size: 16px;
-
-}
-
-
-.request-bar button {
-
-    padding: 12px 25px;
-
-    background: black;
-
-    color: white;
-
-    border: none;
-
-    cursor: pointer;
-
-    font-size: 16px;
-
-}
-
-
-.request-bar button:hover {
-
-    background: #333;
-
-}
-
-
-/* Request body */
-
-.request-body {
-
-    margin-top: 25px;
-
-}
-
-
-.request-body textarea {
-
-    width: 100%;
-
-    height: 200px;
-
-    padding: 15px;
-
-    box-sizing: border-box;
-
-    font-family: monospace;
-
-    font-size: 15px;
-
-    resize: vertical;
-
-}
-
-
-/* Response */
-
-.response {
-
-    margin-top: 30px;
-
-}
-
-
-.response-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-}
-
-
-.response pre {
-
-    background: #1e1e1e;
-
-    color: white;
-
-    padding: 20px;
-
-    min-height: 250px;
-
-    overflow: auto;
-
-    white-space: pre-wrap;
-
-    border-radius: 5px;
-
+    background-color: #ddd;
 }

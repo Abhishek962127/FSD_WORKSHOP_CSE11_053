@@ -21,14 +21,13 @@ function ApiTester() {
         try {
 
             setResponse("");
-
             setStatus("Loading...");
 
 
             let data;
 
 
-            // Convert textarea JSON into JavaScript object
+            // Convert JSON text into JavaScript object
             if (body.trim() !== "") {
 
                 data = JSON.parse(body);
@@ -42,7 +41,11 @@ function ApiTester() {
 
                 url: url,
 
-                data: data
+                data: data,
+
+                headers: {
+                    "Content-Type": "application/json"
+                }
 
             });
 
@@ -61,12 +64,10 @@ function ApiTester() {
 
         } catch (error) {
 
-
-            // Server responded with error status
+            // Server responded with error
             if (error.response) {
 
                 setStatus(error.response.status);
-
 
                 setResponse(
                     JSON.stringify(
@@ -77,7 +78,6 @@ function ApiTester() {
                 );
 
             }
-
 
             // Request was not sent
             else {
@@ -93,28 +93,38 @@ function ApiTester() {
     };
 
 
+    const handleMethodChange = (e) => {
+
+        const newMethod = e.target.value;
+
+        setMethod(newMethod);
+
+
+        if (
+            newMethod === "GET" ||
+            newMethod === "DELETE"
+        ) {
+
+            setBody("");
+
+        }
+
+    };
+
+
     return (
 
-        <div className="api-tester">
+        <div className="api-container">
 
             <h1>API TESTER</h1>
 
 
-            {/* Request Section */}
-
             <div className="request-bar">
 
 
-                {/* Method */}
-
                 <select
-
                     value={method}
-
-                    onChange={(e) =>
-                        setMethod(e.target.value)
-                    }
-
+                    onChange={handleMethodChange}
                 >
 
                     <option value="GET">
@@ -136,34 +146,22 @@ function ApiTester() {
                 </select>
 
 
-                {/* URL */}
-
                 <input
-
                     type="text"
-
                     value={url}
-
                     onChange={(e) =>
                         setUrl(e.target.value)
                     }
-
                     placeholder="Enter API URL"
-
                 />
 
-
-                {/* Send */}
 
                 <button onClick={sendRequest}>
                     Send
                 </button>
 
-
             </div>
 
-
-            {/* Request Body */}
 
             {(method === "POST" ||
                 method === "PUT") && (
@@ -176,18 +174,14 @@ function ApiTester() {
 
 
                     <textarea
-
                         value={body}
-
                         onChange={(e) =>
                             setBody(e.target.value)
                         }
-
                         placeholder={`{
     "name": "Abhishek",
     "email": "abhi@gmail.com"
 }`}
-
                     />
 
                 </div>
@@ -195,10 +189,7 @@ function ApiTester() {
             )}
 
 
-            {/* Response */}
-
             <div className="response">
-
 
                 <div className="response-header">
 
@@ -220,7 +211,6 @@ function ApiTester() {
                         "Response will appear here..."}
 
                 </pre>
-
 
             </div>
 
